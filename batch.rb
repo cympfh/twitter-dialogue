@@ -5,15 +5,17 @@ require 'json'
 #
 # args
 #
-last_id = if File.exist?("./last_id")
-            open("./last_id", "r") do |f|
+
+name = ARGV[0]
+
+last_id_path = "#{name}.last"
+last_id = if File.exist?(last_id_path)
+            open(last_id_path, "r") do |f|
               f.read.to_i
             end
           else
             0
           end
-
-name = ARGV[0]
 
 #
 # helpers
@@ -34,8 +36,8 @@ def as_quote(text)
 end
 
 def get_timeline(name)
-  out = "/tmp/timeline.json"
-  `twurl "/1.1/statuses/user_timeline.json?screen_name=#{name}&count=200" > #{out}`
+  out = "/tmp/timeline-#{name}.json"
+  `twurl "/1.1/statuses/user_timeline.json?screen_name=#{name}&count=200&include_rts=false" > #{out}`
   out
 end
 
@@ -89,6 +91,6 @@ timeline.reverse.each do |item|
 
 end
 
-File.open("./last_id", "w") do |f|
+File.open(last_id_path, "w") do |f|
   f.write timeline[0][:id_str]
 end

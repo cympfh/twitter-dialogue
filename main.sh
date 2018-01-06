@@ -1,7 +1,11 @@
 #!/bin/bash
 
 NAME=${1:-yukari_tamura}
+OUT="${NAME}.out"
+TMP=`mktemp`
 echo "NAME=$NAME"
+echo "OUT=$OUT"
+echo "TMP=$TMP"
 
 neru() {
     echo sleep $1
@@ -10,9 +14,9 @@ neru() {
 
 while :; do
 
-    ruby batch.rb "$NAME" > /tmp/append
-    L=$(wc -l < /tmp/append)
-    cat /tmp/append >> data
+    ruby batch.rb "$NAME" > $TMP
+    L=$(wc -l < $TMP)
+    cat $TMP >> $OUT
 
     echo "new $L lines"
 
