@@ -49,8 +49,10 @@ def report(item, pair)
   # pair = [reply, target]
   created_at = item[:created_at]
   text = item[:text]
+  id_str = item[:id_str]
   obj = {
     :created_at => created_at,
+    :id_str => id_str,
     :text => text,
     :a => pair[0],
     :b => pair[1]
